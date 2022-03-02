@@ -1,71 +1,66 @@
+#include "alertConfigParameters.h"
 #include "typewise-alert.h"
 #include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
 
-BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
-  if(value < lowerLimit) {
-    return TOO_LOW;
-  }
-  if(value > upperLimit) {
-    return TOO_HIGH;
-  }
-  return NORMAL;
+bool validateEnumValue(int enumValue, int maxPossibleValue)
+{
+  if((enumValue >= 0) && (enumValue < maxPossibleValue))
+  { 
+      return true;
+  } 
+  return false;
 }
 
-BreachType classifyTemperatureBreach(
-    CoolingType coolingType, double temperatureInC) {
-  int lowerLimit = 0;
-  int upperLimit = 0;
-  switch(coolingType) {
-    case PASSIVE_COOLING:
-      lowerLimit = 0;
-      upperLimit = 35;
-      break;
-    case HI_ACTIVE_COOLING:
-      lowerLimit = 0;
-      upperLimit = 45;
-      break;
-    case MED_ACTIVE_COOLING:
-      lowerLimit = 0;
-      upperLimit = 40;
-      break;
-  }
-  return inferBreach(temperatureInC, lowerLimit, upperLimit);
+void printWarningMessageForEmail(const char* recipient, char alertStatus[]){
+    printf("To: %s\n%s", recipient, alertStatus);
 }
 
-void checkAndAlert(
-    AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC) {
-
-  BreachType breachType = classifyTemperatureBreach(
-    batteryChar.coolingType, temperatureInC
-  );
-
-  switch(alertTarget) {
-    case TO_CONTROLLER:
-      sendToController(breachType);
-      break;
-    case TO_EMAIL:
-      sendToEmail(breachType);
-      break;
-  }
+void sendToEmail(BreachType breachType) {
+  const char* recepient = "a.b@c.com";
+  printWarningMessageForEmail(recepient, AlertMessageForMail[breachType]);
 }
 
 void sendToController(BreachType breachType) {
   const unsigned short header = 0xfeed;
   printf("%x : %x\n", header, breachType);
 }
-
-void sendToEmail(BreachType breachType) {
-  const char* recepient = "a.b@c.com";
-  switch(breachType) {
-    case TOO_LOW:
-      printf("To: %s\n", recepient);
-      printf("Hi, the temperature is too low\n");
-      break;
-    case TOO_HIGH:
-      printf("To: %s\n", recepient);
-      printf("Hi, the temperature is too high\n");
-      break;
-    case NORMAL:
-      break;
+                    
+//Function to infer the nature of breach occured
+BreachType inferBreach(BatteryCharacter batteryCharacteristics, float tempValue) 
+{
+  if(tempValue < batteryCharacteristics.lowerLimitOfTemp)
+  {return TOO_LOW;
   }
+  else if(tempValue > batteryCharacteristics.upperLimitOfTemp)
+  { return TOO_HIGH;
+  }
+  return NORMAL;
+}
+
+BatteryCharacter populateOperatingTemperatureValues(CoolingType coolingType)
+{
+  BatteryCharacter batteryCharacteristics; 
+  batteryCharacteristics.coolingType = coolingType;
+  batteryCharacteristics.lowerLimitOfTemp = BatteryTemperatureValues[coolingType].lowerLimitOfTemp;
+  batteryCharacteristics.upperLimitOfTemp = BatteryTemperatureValues[coolingType].upperLimitOfTemp;
+  return batteryCharacteristics;
+}
+
+bool alertBreach(AlertOptions alertOption, BreachType breachType){
+  if(validateEnumValue(alertOption, ACCEPTABLE_ALERT_VALUE)){
+      AlertTargetFuncConfiguration[alertOption].alertFunction(breachType);
+      return true;
+  }
+    return false;
+}
+                    
+bool checkAndAlert(AlertOptions alertOption, CoolingType coolingType, float tempValue) {
+  if(validateEnumValue(coolingType, ACCEPTABLE_COOLING_STATES)){
+      BatteryCharacter batteryCharacteristics = populateOperatingTemperatureValues(coolingType);
+      BreachType breachType = inferBreach(batteryCharacteristics, tempValue);
+      return alertBreach(alertOption, breachType);
+  }
+    return false;
 }
