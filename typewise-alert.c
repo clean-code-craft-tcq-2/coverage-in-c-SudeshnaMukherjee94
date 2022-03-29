@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-bool validateEnumValue(int enumValue, int maxPossibleValue)
+bool checkValueWithinRange(int enumValue, int maxPossibleValue)
 {
   if((enumValue >= 0) && (enumValue < maxPossibleValue))
   { 
