@@ -6,23 +6,23 @@
 
 
 TEST_CASE("checkValueWithinMaxValue - Passing enum value satisfying the range - Positive use case ") {
-  bool validateStatus = checkValueWithinRange (2,3);
+  bool validateStatus = checkValueWithinMaxValue (2,3);
   REQUIRE(validateStatus  == true);
 }
 
 TEST_CASE("checkValueWithinMaxValue - Passing enum value greater than the maximum accepted value - Negative use case ") {
-  bool validateStatus = checkValueWithinRange (4,3);
+  bool validateStatus = checkValueWithinMaxValue (4,3);
   REQUIRE(validateStatus  == false);
 }
 
 
 TEST_CASE("checkValueWithinMaxValue - Passing enum value lesser than zero - Negative use case ") {
-  bool validateStatus = checkValueWithinRange (-4,3);
+  bool validateStatus = checkValueWithinMaxValue (-4,3);
   REQUIRE(validateStatus  == false);
 }
 
 TEST_CASE("checkValueWithinMaxValue - Passing enum value lesser than zero but greater than maximum accepted value - Negative use case  ") {
-  bool validateStatus = checkValueWithinRange (-5,-7);
+  bool validateStatus = checkValueWithinMaxValue (-5,-7);
   REQUIRE(validateStatus  == false);
 }
 
