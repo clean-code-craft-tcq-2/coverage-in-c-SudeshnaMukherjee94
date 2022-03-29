@@ -6,4 +6,4 @@ bool checkAndAlert(AlertOptions alertOption, CoolingType coolingType, float temp
 void sendToController(BreachType breachType);
 void sendToEmail(BreachType breachType);
 bool alertBreach(AlertOptions alertOption, BreachType breachType);
-bool validateEnumValue(int enumValue, int maxPossibleValue);
+bool checkValueWithinMaxValue(int enumValue, int maxPossibleValue);
