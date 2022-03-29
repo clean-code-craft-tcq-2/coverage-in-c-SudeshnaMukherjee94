@@ -78,6 +78,7 @@ TEST_CASE("populateOperatingTemperatureValues - Populate the lower and upper tem
 TEST_CASE("AlertBreach - Alert message to controller with breach level NORMAL ") {
   bool alertStatus = alertBreach(TO_CONTROLLER, NORMAL);
   REQUIRE(alertStatus  == true);
+  REQUIRE(sendToEmail == "To a.b@c.com true");
 }
 
 TEST_CASE("AlertBreach - Alert message to controller with breach level TOO_LOW ") {
@@ -181,3 +182,4 @@ TEST_CASE("CheckAndAlert - Check negative scenario ") {
    alertStatus = checkAndAlert(TO_CONTROLLER,HI_ACTIVE_COOLING,30);
    REQUIRE(alertStatus  == true);
 }
+
