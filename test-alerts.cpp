@@ -5,24 +5,24 @@
 #include "typewise-alert.h"
 
 
-TEST_CASE("ValidateEnumValue - Passing enum value satisfying the range - Positive use case ") {
-  bool validateStatus = validateEnumValue (2,3);
+TEST_CASE("checkValueWithinMaxValue - Passing enum value satisfying the range - Positive use case ") {
+  bool validateStatus = checkValueWithinRange (2,3);
   REQUIRE(validateStatus  == true);
 }
 
-TEST_CASE("ValidateEnumValue - Passing enum value greater than the maximum accepted value - Negative use case ") {
-  bool validateStatus = validateEnumValue (4,3);
+TEST_CASE("checkValueWithinMaxValue - Passing enum value greater than the maximum accepted value - Negative use case ") {
+  bool validateStatus = checkValueWithinRange (4,3);
   REQUIRE(validateStatus  == false);
 }
 
 
-TEST_CASE("ValidateEnumValue - Passing enum value lesser than zero - Negative use case ") {
-  bool validateStatus = validateEnumValue (-4,3);
+TEST_CASE("checkValueWithinMaxValue - Passing enum value lesser than zero - Negative use case ") {
+  bool validateStatus = checkValueWithinRange (-4,3);
   REQUIRE(validateStatus  == false);
 }
 
-TEST_CASE("ValidateEnumValue - Passing enum value lesser than zero but greater than maximum accepted value - Negative use case  ") {
-  bool validateStatus = validateEnumValue (-5,-7);
+TEST_CASE("checkValueWithinMaxValue - Passing enum value lesser than zero but greater than maximum accepted value - Negative use case  ") {
+  bool validateStatus = checkValueWithinRange (-5,-7);
   REQUIRE(validateStatus  == false);
 }
 
