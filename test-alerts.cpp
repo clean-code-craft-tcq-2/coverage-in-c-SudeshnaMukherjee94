@@ -84,31 +84,37 @@ TEST_CASE("AlertBreach - Alert message to controller with breach level NORMAL ")
 TEST_CASE("AlertBreach - Alert message to controller with breach level TOO_LOW ") {
   bool alertStatus = alertBreach(TO_CONTROLLER, TOO_LOW);
   REQUIRE(alertStatus  == true);
+  REQUIRE(sendToEmail == "To a.b@c.com true");
 }
 
 TEST_CASE("AlertBreach - Alert message to controller with breach level TOO_HIGH ") {
   bool alertStatus = alertBreach(TO_CONTROLLER, TOO_HIGH);
   REQUIRE(alertStatus  == true);
+  REQUIRE(sendToEmail == "To a.b@c.com true");
 }
 
 TEST_CASE("AlertBreach - Alert message to email with breach level NORMAL ") {
    bool alertStatus = alertBreach(TO_EMAIL, NORMAL);
     REQUIRE(alertStatus  == true);
+    REQUIRE(sendToEmail == "To a.b@c.com true");
 }
 
 TEST_CASE("AlertBreach - Alert message to email with breach level TOO_LOW ") {
   bool alertStatus = alertBreach(TO_EMAIL, TOO_LOW);
   REQUIRE(alertStatus  == true);
+  REQUIRE(sendToEmail == "To a.b@c.com true");
 }
 
 TEST_CASE("AlertBreach - Alert message to email with breach level TOO_HIGH ") {
   bool alertStatus = alertBreach(TO_EMAIL, TOO_HIGH);
   REQUIRE(alertStatus  == true);
+  REQUIRE(sendToEmail == "To a.b@c.com true");
 }
 
 TEST_CASE("AlertBreach - Negative use case - Alert with invalid configuration ") {
   bool alertStatus = alertBreach(INVALID_ALERT_VALUE, TOO_HIGH);
   REQUIRE(alertStatus  == false);
+  REQUIRE(sendToEmail == "To a.b@c.com false");
 }
 
 TEST_CASE("CheckAndAlert - TO_CONTROLLER , PASSIVE_COOLING with all range of temp values ") {
